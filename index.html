@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>PokeTwit</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+  </head>
+  <body class="teal lighten-2">
+
+  <div class="navbar-fixed ">
+    <nav>
+      <div class="nav-wrapper teal darken-4">
+        <a href="#!" class="brand-logo center">PokeTwit</a>
+        <ul class="right hide-on-med-and-down">
+          <li><a href="#">Github</a></li>
+          <li><a href="https://twitter.com/rbalajis25">Twitter</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+
+  <div id="app" class="row">
+<div class="col s3" v-for="pokemon in pokemons">
+  <div class="card">
+    <div class="card-image">
+      <img v-bind:src="pokemon.img" alt="" />
+      <span class="card-title"><a v-bind:href="'https://twitter.com/'+pokemon.name" target="_blank" class="black-text">{{pokemon.name}}</a></span>
+    </div>
+    <div class="card-content">
+      <p v-if="pokemon.handleExist" class="black-text truncate">
+          {{pokemon.user.description}}
+      </p>
+      <p v-else class="red-text truncate">
+
+        pokemon available to capture!!go grab soon
+
+      </p>
+    </div>
+    <div v-if="pokemon.handleExist" class="card-action">
+      <div class="row">
+        <div class="col s4">
+         <h6>Followers</h6>
+         <h4 class="truncate">{{pokemon.user.followers}}</h4>
+        </div>
+        <div class="col s4">
+          <h6>Tweets</h6>
+          <h4 class="truncate">{{pokemon.user.tweets}}</h4>
+
+        </div>
+        <div class="col s4">
+          <h6>Following</h6>
+          <h4 class="truncate">{{pokemon.user.following}}</h4>
+
+        </div>
+
+      </div>
+
+    </div>
+    <div v-else class="card-action">
+      <div class="row">
+        <div class="col s4">
+         <h6>Followers</h6>
+         <h4>0</h4>
+        </div>
+        <div class="col s4">
+          <h6>Tweets</h6>
+          <h4>0</h4>
+
+        </div>
+        <div class="col s4">
+          <h6>Following</h6>
+          <h4>0</h4>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+  </div>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script type="text/javascript">
+      fetch('/scripts/twitpoke.json',{method:'GET'}).
+      then((res)=>{
+        return res.json()
+      }).
+      then((data)=>{
+      render(data)
+      })
+
+      const render = (pokemons) =>{
+        var app = new Vue({
+          el: "#app",
+          data: {
+            pokemons: pokemons
+          }
+        })
+      }
+    </script>
+  </body>
+</html>
